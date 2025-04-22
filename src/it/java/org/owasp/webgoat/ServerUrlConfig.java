@@ -15,7 +15,7 @@ public record ServerUrlConfig(String host, String port, String contextPath) {
   }
 
   public String url(String path) {
-    return "%s/%s".formatted(getFullUrl(), path);
+    return "%s%d/%s".formatted(getFullUrl(), path);
   }
 
   private String getFullUrl() {
