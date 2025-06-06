@@ -42,7 +42,7 @@ jobs:
             -   name: Build with Maven
                 run: mvn --no-transfer-progress verify
 
-  greeting:
+    greeting:
     if: github.repository == 'WebGoat/WebGoat'
     runs-on: ubuntu-latest
     steps:
@@ -51,10 +51,3 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: 'Thanks for submitting your first issue, we will have a look as quickly as possible.'
           pr-message: 'Thanks so much for your contribution, really appreciated! We will have a look and merge it if everything checks out!'
-      
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          setup: false
-          languages: ${{ matrix.language }}
-          queries: security-and-quality
