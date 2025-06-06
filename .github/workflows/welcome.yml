@@ -3,6 +3,45 @@ name: Welcome
 on: workflow_dispatch
 
 jobs:
+   pre-commit:
+        name: Pre-commit check
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout git repository
+                uses: actions/checkout@v4.1.6
+            -   name: Setup python
+                uses: actions/setup-python@v5
+                with:
+                    python-version: "3.9"
+            -   uses: actions/setup-java@v4
+                with:
+                    distribution: 'temurin'
+                    java-version: '23'
+            -   name: Pre-commit checks
+                uses: pre-commit/action@v3.0.1
+            -   name: pre-commit-c-lite
+                uses: pre-commit-ci/lite-action@v1.1.0
+                if: always()
+    build:
+        runs-on: ${{ matrix.os }}
+        needs: [ pre-commit ]
+        strategy:
+            fail-fast: true
+            matrix:
+                os: [ windows-latest, ubuntu-latest, macos-13 ]
+            max-parallel: 1
+        steps:
+            -   uses: actions/checkout@v4.1.6
+            -   name: Set up JDK 23
+                uses: actions/setup-java@v4.2.1
+                with:
+                    distribution: 'temurin'
+                    java-version: 23
+                    architecture: x64
+                    cache: 'maven'
+            -   name: Build with Maven
+                run: mvn --no-transfer-progress verify
+
   greeting:
     if: github.repository == 'WebGoat/WebGoat'
     runs-on: ubuntu-latest
@@ -12,3 +51,10 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: 'Thanks for submitting your first issue, we will have a look as quickly as possible.'
           pr-message: 'Thanks so much for your contribution, really appreciated! We will have a look and merge it if everything checks out!'
+      
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          setup: false
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
