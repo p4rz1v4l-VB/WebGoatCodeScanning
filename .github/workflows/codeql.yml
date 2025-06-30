@@ -100,7 +100,7 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
-        output: sarif-results
+        output: sarif-results/${{ matrix.language }}.sarif
         upload: False
 
     - name: adjust-cvss
