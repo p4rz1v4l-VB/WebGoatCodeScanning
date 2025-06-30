@@ -93,7 +93,7 @@ jobs:
       with:
         patterns: |
           java/**:5.0
-        input: sarif-results/${{ matrix.language }}.sarif
+        input: sarif-results/java.sarif
         output: sarif-results/${{ matrix.language }}.sarif
 
     - name: Upload SARIF
