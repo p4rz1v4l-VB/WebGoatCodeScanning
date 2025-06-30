@@ -92,6 +92,7 @@ jobs:
       with:
         patterns: |
           java/**:2.0
+          java/zipslip:9.9
         input: sarif-results/java.sarif
         output: sarif-results/${{ matrix.language }}.sarif
         
