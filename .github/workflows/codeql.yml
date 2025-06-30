@@ -98,6 +98,11 @@ jobs:
         output: sarif-results
         upload: False
 
+      
+    - name: List SARIF results
+      run: ls -la sarif-results
+
+
     - name: adjust-cvss
       uses: advanced-security/adjust-cvss@master
       with:
